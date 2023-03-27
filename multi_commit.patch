@@ -1,0 +1,92 @@
+From 2c711c88d94bd59179c48bc9c1f25a006fcc06e0 Mon Sep 17 00:00:00 2001
+From: Haoran-Jie <2291000484@qq.com>
+Date: Mon, 27 Mar 2023 22:39:50 +0100
+Subject: [PATCH 1/3] added ignore file
+
+---
+ .gitignore | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 .gitignore
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..af906db
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1 @@
++./task1_venv
+\ No newline at end of file
+-- 
+2.39.2
+
+
+From 444bce436d4d72be11b0a88c40cfd41cdbd5520c Mon Sep 17 00:00:00 2001
+From: Haoran-Jie <2291000484@qq.com>
+Date: Mon, 27 Mar 2023 22:40:55 +0100
+Subject: [PATCH 2/3] modified client3
+
+---
+ client3.py | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/client3.py b/client3.py
+index 3fc09b7..f772a25 100644
+--- a/client3.py
++++ b/client3.py
+@@ -35,14 +35,17 @@ def getDataPoint(quote):
+     stock = quote['stock']
+     bid_price = float(quote['top_bid']['price'])
+     ask_price = float(quote['top_ask']['price'])
+-    price = bid_price
++    price = (bid_price+ask_price)/2
+     return stock, bid_price, ask_price, price
+ 
+ 
+ def getRatio(price_a, price_b):
+     """ Get ratio of price_a and price_b """
+     """ ------------- Update this function ------------- """
+-    return 1
++    if price_b==0:
++        return
++    return price_a/price_b
++
+ 
+ 
+ # Main
+@@ -52,8 +55,10 @@ if __name__ == "__main__":
+         quotes = json.loads(urllib.request.urlopen(QUERY.format(random.random())).read())
+ 
+         """ ----------- Update to get the ratio --------------- """
++        prices = dict()
+         for quote in quotes:
+             stock, bid_price, ask_price, price = getDataPoint(quote)
++            prices[stock]=price
+             print("Quoted %s at (bid:%s, ask:%s, price:%s)" % (stock, bid_price, ask_price, price))
+ 
+-        print("Ratio %s" % getRatio(price, price))
++        print("Ratio %s" % getRatio(prices["ABC"], prices["DEF"]))
+-- 
+2.39.2
+
+
+From 0de197bcbb37d0ab43965183f670df05da431df0 Mon Sep 17 00:00:00 2001
+From: Haoran-Jie <2291000484@qq.com>
+Date: Mon, 27 Mar 2023 22:41:28 +0100
+Subject: [PATCH 3/3] edited gitignore
+
+---
+ .gitignore | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/.gitignore b/.gitignore
+index af906db..c0f62ed 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1 @@
+-./task1_venv
+\ No newline at end of file
++task1_venv/
+\ No newline at end of file
+-- 
+2.39.2
+
